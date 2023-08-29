@@ -10,8 +10,8 @@ void setup() {
     Serial.begin(115200);
     delay(2000);
     
-    RX1.powerUpModule();
-    RX1.setChannel(0x2A0C);
+    RX1.powerUp();
+    RX1.setChannel(1, 1);
 
     Serial.println("Setup Done");
 }

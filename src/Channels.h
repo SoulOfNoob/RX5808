@@ -3,6 +3,28 @@
 
 #include <Arduino.h>
 
+//default: high 00010000110000010011 low -> PD_IFAF | PD_DIV4 | PD_5GVCO | PD_REG1D8 | PD_DIV80 | PD_PLL1D8
+#define PD_VCLAMP       0x00080000 /*Video clamp power down control */
+#define PD_VAMP         0x00040000 /*Video amp power down control */
+#define PD_IF_DEMOD     0x00020000 /*IF demodulator power down control */
+#define PD_IFAF         0x00010000 /*IFAF power down control */
+#define PD_RSSI_SQUELCH 0x00008000 /*RSSI & noise squelch power down control */
+#define PD_REGBS        0x00004000 /*BS regulator power down control */
+#define PD_REGIF        0x00002000 /*IF regulator power down control */
+#define PD_BC           0x00001000 /*BC power down control */
+#define PD_DIV4         0x00000800 /*Divide-by-4 power down control */
+#define PD_5GVCO        0x00000400 /*5G VCO power down control */
+#define PD_SYN          0x00000200 /*SYN power down control */
+#define PD_AU6M         0x00000100 /*6M audio modulator power down control */
+#define PD_6M           0x00000080 /*6M power down control */
+#define PD_AU6M5        0x00000040 /*6M5 audio modulator power down control */
+#define PD_6M5          0x00000020 /*6M5 power down control */
+#define PD_REG1D8       0x00000010 /*1.8V regulator power down control */
+#define PD_IFABF        0x00000008 /*IFABF power down control */
+#define PD_MIXER        0x00000004 /*RF Mixer power down control */
+#define PD_DIV80        0x00000002 /*Divide-by-80 power down control */
+#define PD_PLL1D8       0x00000001 /*PLL 1.8V regulator power down control */
+
 #define MAX_BAND 7
 
 // Channels to send to the SPI registers
@@ -18,7 +40,7 @@ const uint16_t channelTable[] PROGMEM = {
     0x2991, 0x299b, 0x299b, 0x299b, 0x299b, 0x299b, 0x299b, 0x299b  //even more connex, last 6 unused!!!
 };
 
-// Channels' MHz Values. Just for reference. Not used in code.
+// Channels' MHz Values.
 const uint16_t channelFreqTable[] PROGMEM = {
     // Channel 1 - 8
     5658, 5695, 5732, 5769, 5806, 5843, 5880, 5917, // Raceband

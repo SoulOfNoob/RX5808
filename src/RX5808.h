@@ -3,38 +3,45 @@
 
 #include <Arduino.h>
 #include <Channels.h>
+#include <FastDRW.h>
+#include <FastADC.h>
+#include <CustomSPI.h>
 
-#if defined(ESP8266)
-    #pragma message "Compile for ESP8266!"
-#elif defined(ESP32)
-    #pragma message "Compile for ESP32!"
-    #include <driver/adc.h>
-#else
-    #pragma message "Compile for Arduino!"
-#endif
+// #if defined(ESP8266)
+//     #pragma message "Compile for ESP8266!"
+// #elif defined(ESP32)
+//     #pragma message "Compile for ESP32!"
+//     #include <driver/adc.h>
+// #else
+//     #pragma message "Compile for Arduino!"
+// #endif
 
 #define MIN_TUNE_TIME 30
 
 class RX5808
 {
     private:
-        uint8_t _pin_ch1;
-        uint8_t _pin_ch2;
-        uint8_t _pin_ch3;
+        uint8_t _pin_spi_data;
+        uint8_t _pin_spi_sel;
+        uint8_t _pin_spi_clk;
         uint8_t _pin_rssi;
+        CustomSPI _custom_spi;
+
+        void PowerDownFeatures(uint32_t features) const ;
+        void reset() const ;
 
     public:
         RX5808(uint8_t pin_ch1, uint8_t pin_ch2, uint8_t pin_ch3, uint8_t pin_rssi);
 
-        void setChannel(uint16_t frequency) const;
-        void setChannel(uint8_t channel, uint8_t band) const;
+        uint16_t setFrequency(uint16_t frequency) const ;
+        uint16_t setChannel(uint8_t channel, uint8_t band) const ;
         
-        uint16_t getRSSI() const;
+        uint16_t getRSSI() const ;
 
-        void powerDownModule() const;
-        void powerUpModule() const;
+        void powerDown() const ;
+        void powerUp() const ;
 
-        void scanChannels();
+        void scanChannels() const ;
 };
 
 #endif
