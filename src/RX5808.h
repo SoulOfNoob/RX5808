@@ -16,8 +16,6 @@
 //     #pragma message "Compile for Arduino!"
 // #endif
 
-#define MIN_TUNE_TIME 30
-
 class RX5808
 {
     private:

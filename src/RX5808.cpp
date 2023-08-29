@@ -12,16 +12,19 @@ RX5808::RX5808(
     _pin_rssi(pin_rssi),
     _custom_spi(pin_ch1, pin_ch2, pin_ch3)
 {
+    FastADC::init();
     PowerDownFeatures(PD_IFAF | PD_DIV4 | PD_5GVCO | PD_REG1D8 | PD_DIV80 | PD_PLL1D8 | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP | PD_MIXER | PD_IFABF | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_REGIF);
 }
 
 uint16_t RX5808::getRSSI() const {
-    return 0;
+    return FastADC::read(_pin_rssi);
 }
+
 void RX5808::powerDown() const {
     // Power down all features
     PowerDownFeatures(PD_PLL1D8 | PD_DIV80 | PD_MIXER | PD_IFABF | PD_REG1D8 | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_5GVCO | PD_DIV4 | PD_DIV4 | PD_BC | PD_REGIF | PD_REGBS | PD_RSSI_SQUELCH | PD_IFAF | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP);
 }
+
 void RX5808::powerUp() const {
     reset();
 }

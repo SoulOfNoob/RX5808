@@ -27,6 +27,8 @@
 
 #define MAX_BAND 7
 
+#define MIN_TUNE_TIME 30
+
 // Channels to send to the SPI registers
 const uint16_t channelTable[] PROGMEM = {
     // Channel 1 - 8
