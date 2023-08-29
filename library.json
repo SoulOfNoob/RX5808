@@ -18,5 +18,10 @@
   ],
   "license": "MIT",
   "frameworks": "Arduino",
-  "platforms": "Arduino, ESP32, ESP8266"
+  "platforms": "Arduino, ESP32, ESP8266",
+  "export": {
+      "include": [
+          "/src/*.cpp"
+      ]
+  }
 }

@@ -1,3 +1,4 @@
 .pio
 .vscode/
 lib
+compile_commands.json

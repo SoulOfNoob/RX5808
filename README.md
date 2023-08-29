@@ -21,7 +21,11 @@ To use RX5808 with SPI, some modules need to be modded like this:
 ### Sources
 
 - [RX5808 Datasheet](https://www.foxtechfpv.com/product/5.8G%20modules/rx5808/RX5808-Spec-V1.pdf)
+- [Chorus-RF-Laptimer](https://github.com/voroshkov/Chorus-RF-Laptimer/)
+  - SPI driver based on fs_skyrf_58g-main.c by Simon Chambers
+  - fast ADC reading code is by "jmknapp" from Arduino forum
+  - fast port I/O code from <http://masteringarduino.blogspot.com.by/2013/10/fastest-and-smallest-digitalread-and.html>
+
 - [rx5808-pro-diversity](https://github.com/sheaivey/rx5808-pro-diversity/)
 - [RotorHazard](https://github.com/RotorHazard/RotorHazard/)
-- [Chorus-RF-Laptimer](https://github.com/voroshkov/Chorus-RF-Laptimer/)
 - [pidflight-lap-firmware](https://github.com/cmengler/pidflight-lap-firmware/)
