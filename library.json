@@ -1,0 +1,22 @@
+{
+  "name": "Generic RX5808 Library",
+  "version": "0.0.1",
+  "description": "This Library is my attempt to extract the control of the RX5080 module from the projects listed below into a standalone library so it can be used and extended in different projects",
+  "keywords": "RX5808, FPV, Arduino, ESP32, ESP8266",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/SoulOfNoob/RX5808.git"
+  },
+  "authors":
+  [
+    {
+      "name": "SoulOfNoob",
+      "email": "soulofnoob@ymail.com",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "frameworks": "Arduino",
+  "platforms": "Arduino, ESP32, ESP8266"
+}
