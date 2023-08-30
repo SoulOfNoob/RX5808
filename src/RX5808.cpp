@@ -180,6 +180,10 @@ void RX5808::setFrequency(uint16_t frequency) {
     _current_frequency = frequency;
 }
 
+void RX5808::setChannel(uint8_t channel) {
+    setChannel(channel, _current_band);
+}
+
 void RX5808::setChannel(uint8_t channel, uint8_t band) {
     uint16_t frequency = pgm_read_word_near(channelFreqTable + channel + (8 * band));
     setFrequency(frequency);

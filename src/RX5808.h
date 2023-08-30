@@ -40,6 +40,7 @@ class RX5808
         RX5808(uint8_t pin_ch1, uint8_t pin_ch2, uint8_t pin_ch3, uint8_t pin_rssi);
 
         void setFrequency(uint16_t frequency);
+        void setChannel(uint8_t channel);
         void setChannel(uint8_t channel, uint8_t band);
 
         void cycleCurrentBand();
