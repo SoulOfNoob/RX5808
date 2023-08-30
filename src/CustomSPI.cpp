@@ -13,10 +13,6 @@ CustomSPI::CustomSPI(
     pinMode (_pin_spi_sel, OUTPUT);
     pinMode (_pin_spi_data, OUTPUT);
     pinMode (_pin_spi_clk, OUTPUT);
-
-    digitalWrite(_pin_spi_clk, LOW);
-    digitalWrite(_pin_spi_sel, HIGH);
-    delayMicroseconds(1);
 }
 
 void CustomSPI::SERIAL_SENDBIT1() const {
