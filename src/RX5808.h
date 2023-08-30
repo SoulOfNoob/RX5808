@@ -42,8 +42,8 @@ class RX5808
         void setFrequency(uint16_t frequency);
         void setChannel(uint8_t channel, uint8_t band);
 
-        void cycleChannel();
-        uint8_t scanBand(uint8_t band);
+        void cycleCurrentBand();
+        uint8_t scanCurrentBand();
 
         uint16_t getRSSI() const ;
 

@@ -77,7 +77,7 @@ void RX5808::PowerDownFeatures(uint32_t features) {
     setState(State::Idle);
 }
 
-void RX5808::cycleChannel() {
+void RX5808::cycleCurrentBand() {
     if(_current_channel != -1 && _current_band != -1) {
         uint8_t next_channel = _current_channel + 1;
         if (next_channel == 8) next_channel = 0;
@@ -86,7 +86,7 @@ void RX5808::cycleChannel() {
     }
 }
 
-uint8_t RX5808::scanBand(uint8_t band) {
+uint8_t RX5808::scanCurrentBand() {
     // ToDo: this will be blocking...
 }
 
