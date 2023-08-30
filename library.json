@@ -1,6 +1,6 @@
 {
   "name": "Generic RX5808 Library",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "This Library is my attempt to extract the control of the RX5080 module from the projects listed below into a standalone library so it can be used and extended in different projects",
   "keywords": "RX5808, FPV, Arduino, ESP32, ESP8266",
   "repository":
