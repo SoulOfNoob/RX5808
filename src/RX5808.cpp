@@ -1,5 +1,13 @@
 #include <RX5808.h>
 
+/**
+ * @brief Construct a new RX5808::RX5808 object
+ * 
+ * @param pin_ch1 CH1 pin of Module (SPI_MISO)
+ * @param pin_ch2 CH2 pin of Module (SPI_SS)
+ * @param pin_ch3 CH3 pin of Module (SPI_SCLK)
+ * @param pin_rssi RSSI pin of Module
+ */
 RX5808::RX5808(
     uint8_t pin_ch1, 
     uint8_t pin_ch2, 
@@ -14,24 +22,32 @@ RX5808::RX5808(
 {
     FastADC::init();
     PowerDownFeatures(PD_IFAF | PD_DIV4 | PD_5GVCO | PD_REG1D8 | PD_DIV80 | PD_PLL1D8 | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP | PD_MIXER | PD_IFABF | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_REGIF);
+    setState(State::Idle);
 }
 
 uint16_t RX5808::getRSSI() const {
-    return FastADC::read(_pin_rssi);
+    if(getState() != State::Tuning) {
+        return FastADC::read(_pin_rssi);
+    }
+    return 0;
 }
 
-void RX5808::powerDown() const {
+void RX5808::powerDown() {
     // Power down all features
     PowerDownFeatures(PD_PLL1D8 | PD_DIV80 | PD_MIXER | PD_IFABF | PD_REG1D8 | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_5GVCO | PD_DIV4 | PD_DIV4 | PD_BC | PD_REGIF | PD_REGBS | PD_RSSI_SQUELCH | PD_IFAF | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP);
+    setState(State::PoweredDown);
 }
 
-void RX5808::powerUp() const {
+void RX5808::powerUp() {
     reset();
 }
 
 //Power Down Control Register
-void RX5808::PowerDownFeatures(uint32_t features) const {
+void RX5808::PowerDownFeatures(uint32_t features) {
     uint8_t i;
+
+    setState(State::Busy);
+
     FastDRW::writeLow(_pin_spi_sel);
     delayMicroseconds(1);
     
@@ -56,12 +72,17 @@ void RX5808::PowerDownFeatures(uint32_t features) const {
 
     FastDRW::writeHigh(_pin_spi_sel);
     delayMicroseconds(1);
-    delay(MIN_TUNE_TIME);
+
+    setState(State::Tuning);
+    delay(_min_tune_time);
+    setState(State::Idle);
 }
 
 
 // Reset needs to be used to wake the module up if it is completely powered down
-void RX5808::reset() const {
+void RX5808::reset() {
+    setState(State::Busy);
+
     FastDRW::writeLow(_pin_spi_clk);
     FastDRW::writeLow(_pin_spi_sel);
     delayMicroseconds(1);
@@ -84,10 +105,12 @@ void RX5808::reset() const {
     FastDRW::writeHigh(_pin_spi_sel);
     delayMicroseconds(1);
 
-    delay(MIN_TUNE_TIME);
+    setState(State::Tuning);
+    delay(_min_tune_time);
+    setState(State::Idle);
 }
 
-uint16_t RX5808::setFrequency(uint16_t frequency) const {
+void RX5808::setFrequency(uint16_t frequency) {
     uint8_t i;
     uint16_t channelData;
 
@@ -96,6 +119,8 @@ uint16_t RX5808::setFrequency(uint16_t frequency) const {
     i = channelData % 32;
     channelData /= 32;
     channelData = (channelData << 7) + i;
+
+    setState(State::Busy);
 
     // Second is the channel data from the lookup table
     // 20 bytes of register data are sent, but the MSB 4 bits are zeros
@@ -136,12 +161,36 @@ uint16_t RX5808::setFrequency(uint16_t frequency) const {
     FastDRW::writeHigh(_pin_spi_sel);
     delayMicroseconds(1);
     
-    delay(MIN_TUNE_TIME);
-    
-    return frequency;
+    setState(State::Tuning);
+    delay(_min_tune_time);
+    setState(State::Idle);
 }
 
-uint16_t RX5808::setChannel(uint8_t channel, uint8_t band) const {
+void RX5808::setChannel(uint8_t channel, uint8_t band) {
     uint16_t frequency = pgm_read_word_near(channelFreqTable + channel + (8 * band));
-    return setFrequency(frequency);
+    setFrequency(frequency);
+}
+
+/**
+ * @brief Disable blocking tune delay, for use in RTOS applications.
+ * @note You have to implement non blocking delay yourself
+ */
+void RX5808::disableTuneTime() {
+    _min_tune_time = 0;
+}
+
+void RX5808::enableTuneTime() {
+    _min_tune_time = MIN_TUNE_TIME;
+}
+
+void RX5808::setState(State state) {
+    _current_state = state;
+}
+
+State RX5808::getState() const {
+    return _current_state;
+}
+
+uint8_t RX5808::getTuneTime() const {
+    return _min_tune_time;
 }

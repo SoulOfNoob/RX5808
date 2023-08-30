@@ -1,6 +1,6 @@
 # Generic RX5808 Library
 
-## For Arduino and ESP32/8266
+## For ESP32, ESP8266(untested) and Arduino(untested)
 
 This Library is my attempt to extract the control of the RX5080 module from the projects listed below into a standalone library so it can be used and extended in different projects.
 

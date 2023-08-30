@@ -1,5 +1,5 @@
-#ifndef CHANNELS_H
-#define CHANNELS_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 #include <Arduino.h>
 
@@ -26,8 +26,6 @@
 #define PD_PLL1D8       0x00000001 /*PLL 1.8V regulator power down control */
 
 #define MAX_BAND 7
-
-#define MIN_TUNE_TIME 30
 
 // Channels to send to the SPI registers
 const uint16_t channelTable[] PROGMEM = {
