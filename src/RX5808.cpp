@@ -77,6 +77,19 @@ void RX5808::PowerDownFeatures(uint32_t features) {
     setState(State::Idle);
 }
 
+void RX5808::cycleChannel() {
+    if(_current_channel != -1 && _current_band != -1) {
+        uint8_t next_channel = _current_channel + 1;
+        if (next_channel == 8) next_channel = 0;
+        setChannel(next_channel, _current_band);
+        // ToDo: only works if setChannel was used to set the frequency...
+    }
+}
+
+uint8_t RX5808::scanBand(uint8_t band) {
+    // ToDo: this will be blocking...
+}
+
 
 // Reset needs to be used to wake the module up if it is completely powered down
 void RX5808::reset() {
@@ -164,11 +177,14 @@ void RX5808::setFrequency(uint16_t frequency) {
     setState(State::Tuning);
     delay(_min_tune_time);
     setState(State::Idle);
+    _current_frequency = frequency;
 }
 
 void RX5808::setChannel(uint8_t channel, uint8_t band) {
     uint16_t frequency = pgm_read_word_near(channelFreqTable + channel + (8 * band));
     setFrequency(frequency);
+    _current_channel = channel;
+    _current_band = band;
 }
 
 /**

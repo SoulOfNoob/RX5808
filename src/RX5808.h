@@ -23,6 +23,11 @@ class RX5808
         uint8_t _pin_spi_sel;
         uint8_t _pin_spi_clk;
         uint8_t _pin_rssi;
+
+        uint8_t _current_channel = -1;
+        uint8_t _current_band = -1;
+        uint16_t _current_frequency = -1;
+
         CustomSPI _custom_spi;
         State _current_state;
         bool async_mode = false;
@@ -36,7 +41,12 @@ class RX5808
 
         void setFrequency(uint16_t frequency);
         void setChannel(uint8_t channel, uint8_t band);
+
+        void cycleChannel();
+        uint8_t scanBand(uint8_t band);
+
         uint16_t getRSSI() const ;
+
 
         void powerDown();
         void powerUp();
