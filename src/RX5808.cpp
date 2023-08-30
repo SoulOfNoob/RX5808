@@ -21,6 +21,9 @@ RX5808::RX5808(
     _custom_spi(pin_ch1, pin_ch2, pin_ch3)
 {
     FastADC::init();
+    pinMode(_pin_spi_data, OUTPUT);
+    pinMode(_pin_spi_sel, OUTPUT);
+    pinMode(_pin_spi_clk, OUTPUT);
     PowerDownFeatures(PD_IFAF | PD_DIV4 | PD_5GVCO | PD_REG1D8 | PD_DIV80 | PD_PLL1D8 | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP | PD_MIXER | PD_IFABF | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_REGIF);
     setState(State::Idle);
 }
@@ -189,6 +192,10 @@ void RX5808::setState(State state) {
 
 State RX5808::getState() const {
     return _current_state;
+}
+
+uint8_t RX5808::getMinTuneTime() const {
+    return MIN_TUNE_TIME;
 }
 
 uint8_t RX5808::getTuneTime() const {

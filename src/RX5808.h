@@ -48,6 +48,7 @@ class RX5808
 
         void setState(State state);
         State getState() const ;
+        uint8_t getMinTuneTime() const ;
         uint8_t getTuneTime() const ;
 };
 
