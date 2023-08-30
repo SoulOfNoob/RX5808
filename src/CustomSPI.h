@@ -2,7 +2,6 @@
 #define CUSTOMSPI_H
 
 #include <Arduino.h>
-#include <FastDRW.h>
 
 class CustomSPI {
     private:

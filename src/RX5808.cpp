@@ -20,17 +20,13 @@ RX5808::RX5808(
     _pin_rssi(pin_rssi),
     _custom_spi(pin_ch1, pin_ch2, pin_ch3)
 {
-    FastADC::init();
-    pinMode(_pin_spi_data, OUTPUT);
-    pinMode(_pin_spi_sel, OUTPUT);
-    pinMode(_pin_spi_clk, OUTPUT);
-    PowerDownFeatures(PD_IFAF | PD_DIV4 | PD_5GVCO | PD_REG1D8 | PD_DIV80 | PD_PLL1D8 | PD_IF_DEMOD | PD_VAMP | PD_VCLAMP | PD_MIXER | PD_IFABF | PD_6M5 | PD_AU6M5 | PD_6M | PD_AU6M | PD_SYN | PD_REGIF);
     setState(State::Idle);
 }
 
 uint16_t RX5808::getRSSI() const {
     if(getState() != State::Tuning) {
-        return FastADC::read(_pin_rssi);
+        analogRead(_pin_rssi);
+        return analogRead(_pin_rssi);
     }
     return 0;
 }
@@ -51,7 +47,7 @@ void RX5808::PowerDownFeatures(uint32_t features) {
 
     setState(State::Busy);
 
-    FastDRW::writeLow(_pin_spi_sel);
+    digitalWrite(_pin_spi_sel, LOW);
     delayMicroseconds(1);
     
     // send 0x0A
@@ -73,7 +69,7 @@ void RX5808::PowerDownFeatures(uint32_t features) {
         features >>= 1;
     }
 
-    FastDRW::writeHigh(_pin_spi_sel);
+    digitalWrite(_pin_spi_sel, HIGH);
     delayMicroseconds(1);
 
     setState(State::Tuning);
@@ -86,8 +82,9 @@ void RX5808::PowerDownFeatures(uint32_t features) {
 void RX5808::reset() {
     setState(State::Busy);
 
-    FastDRW::writeLow(_pin_spi_clk);
-    FastDRW::writeLow(_pin_spi_sel);
+    digitalWrite(_pin_spi_clk, LOW);
+    digitalWrite(_pin_spi_sel, LOW);
+
     delayMicroseconds(1);
 
     // State register 0x0F
@@ -105,7 +102,7 @@ void RX5808::reset() {
     }
 
     // Finished clocking data in
-    FastDRW::writeHigh(_pin_spi_sel);
+    digitalWrite(_pin_spi_sel, HIGH);
     delayMicroseconds(1);
 
     setState(State::Tuning);
@@ -128,8 +125,8 @@ void RX5808::setFrequency(uint16_t frequency) {
     // Second is the channel data from the lookup table
     // 20 bytes of register data are sent, but the MSB 4 bits are zeros
     // register address = 0x1, write, data0-15=channelData data15-19=0x0
-    FastDRW::writeLow(_pin_spi_clk);
-    FastDRW::writeLow(_pin_spi_sel);
+    digitalWrite(_pin_spi_clk, LOW);
+    digitalWrite(_pin_spi_sel, LOW);
     delayMicroseconds(1);
 
     // Register 0x1
@@ -161,7 +158,7 @@ void RX5808::setFrequency(uint16_t frequency) {
     }
 
     // Finished clocking data in
-    FastDRW::writeHigh(_pin_spi_sel);
+    digitalWrite(_pin_spi_sel, HIGH);
     delayMicroseconds(1);
     
     setState(State::Tuning);

@@ -3,8 +3,6 @@
 
 #include <Arduino.h>
 #include <constants.h>
-#include <FastDRW.h>
-#include <FastADC.h>
 #include <CustomSPI.h>
 #include <SPI.h>
 

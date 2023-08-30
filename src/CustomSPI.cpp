@@ -14,25 +14,25 @@ CustomSPI::CustomSPI(
     pinMode (_pin_spi_data, OUTPUT);
     pinMode (_pin_spi_clk, OUTPUT);
 
-    FastDRW::writeLow(_pin_spi_clk);
-    FastDRW::writeHigh(_pin_spi_sel);
+    digitalWrite(_pin_spi_clk, LOW);
+    digitalWrite(_pin_spi_sel, HIGH);
     delayMicroseconds(1);
 }
 
 void CustomSPI::SERIAL_SENDBIT1() const {
-    FastDRW::writeHigh(_pin_spi_data);
+    digitalWrite(_pin_spi_data, HIGH);
     delayMicroseconds(1);
-    FastDRW::writeHigh(_pin_spi_clk);
+    digitalWrite(_pin_spi_clk, HIGH);
     delayMicroseconds(1);
-    FastDRW::writeLow(_pin_spi_clk);
+    digitalWrite(_pin_spi_clk, LOW);
     delayMicroseconds(1);
 }
 
 void CustomSPI::SERIAL_SENDBIT0() const {
-    FastDRW::writeLow(_pin_spi_data);
+    digitalWrite(_pin_spi_data, LOW);
     delayMicroseconds(1);
-    FastDRW::writeHigh(_pin_spi_clk);
+    digitalWrite(_pin_spi_clk, HIGH);
     delayMicroseconds(1);
-    FastDRW::writeLow(_pin_spi_clk);
+    digitalWrite(_pin_spi_clk, LOW);
     delayMicroseconds(1);
 }

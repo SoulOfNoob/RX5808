@@ -1,3 +1,11 @@
+/**
+ * @file simpleScanner.cpp
+ * @author SoulOfNoob
+ * @brief Simple RSSI Scanner Example, prints RSSI of all 8 Raceband Channels to console using single RX5808 Module
+ * @version 1.0
+ * @date 2023-08-30
+ */
+
 #include <Arduino.h>
 #include <RX5808.h>
 

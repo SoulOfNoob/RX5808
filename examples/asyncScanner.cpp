@@ -1,3 +1,11 @@
+/**
+ * @file asyncScanner.cpp
+ * @author SoulOfNoob
+ * @brief Example for ESP32 based boards to control multiple RX5080 Modules simultaniously without delay
+ * @version 1.0
+ * @date 2023-08-30
+ */
+
 #include <Arduino.h>
 #include <RX5808.h>
 
